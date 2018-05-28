@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{.Release.Name}}-configmap
+  {{- template "mychart.labels"}}
+data:
+  {{- $files := .Files }}
+  {{- range tuple "index.html" }}
+  {{ . }}: |-
+    {{ $files.Get . }}
+  {{- end }}

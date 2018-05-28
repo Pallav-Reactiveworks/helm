@@ -1,0 +1,26 @@
+kind: Deployment 
+apiVersion: extensions/v1beta1 
+metadata: 
+  name: nginx 
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        app: nginx 
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        volumeMounts:
+          - name: configmap
+            mountPath: /usr/share/nginx/html/
+      volumes:
+      - name: configmap
+        configMap:
+          name: {{.Release.Name}}-configmap
+      restartPolicy: Always
